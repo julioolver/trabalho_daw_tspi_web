@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">edição de Livros</ui:define>
+        <ui:define name="conteudo">
+            <h:form prependId="falase">
+                <p:growl/>
+                <div align="center">
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <p:outputLabel value="Edição de Livro"/>
+                        </f:facet>
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="Cancelar"
+                                                 ajax="false" immediate="true"
+                                                 action="#{controleLivro.cancelar()}"/>
+                                <p:commandButton value="Salvar"
+                                                 ajax="false"
+                                                 action="#{controleLivro.salvar()}"
+                                                 icon="pi pi-save"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="ISBN"/>
+                        <p:inputText value="#{controleLivro.objeto.ISBN}" readonly="ture" size="16"/>
+                        <p:outputLabel value="Título" for="txtTitulo"/>
+                        <p:inputText id="txtTitulo" value="#{controleLivro.objeto.titulo}"
+                                     size="50" maxlength="50" placeholder="Obrigatório"/>
+                        
+                        <p:outputLabel value="Resume" for="txtResumo"/>
+                        <p:inputText id="txtResumo" value="#{controleLivro.objeto.resumo}"
+                                     size="3" maxlength="200"/>
+                        
+                        <p:outputLabel value="Cod. Barras" for="txtBarras"/>
+                        <p:inputText id="txtBarras" value="#{controleLivro.objeto.codigobarras}"
+                                     size="20" maxlength="16"/>
+                        
+                        <p:outputLabel value="Editora" for="txtEditora"/>
+                        <p:inputText id="txtEditora" value="#{controleLivro.objeto.editora}"
+                                     size="50" maxlength="50"/>
+                        
+                        <p:outputLabel value="Valor" for="txtValor"/>
+                        <p:inputText id="txtValor" value="#{controleLivro.objeto.valor}"
+                                     type="numeric(10,2)"/>
+
+                        
+                        <p:outputLabel value="Data de Cadastro" for="txtDataCadastro"/>
+                        <p:calendar id="txtDataCadastro" value="#{controleLivro.objeto.datacadastro}"
+                                mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                                <f:converter converterId="converterCalendar"/> 
+                        </p:calendar>  
+                        
+                                                <p:outputLabel value="Número Páginas" for="txtNpaginas"/>
+                                                <p:inputText id="txtNpaginas" value="#{controleLivro.objeto.numeropaginas}"
+                                     size="5"/>
+                        
+                         <p:outputLabel value="Idioma" for="selectIdioma"/>
+                         <p:selectOneMenu id="selectIdioma" value="#{controleLivro.objeto.idioma}"
+                                     filter= "true" filterMatchMode= "startWith">
+                            <f:converter converterId="converterIdioma"/>
+                            <f:selectItem noSelectionOption="true"
+                                          itemLabel="selecione um registro"/>
+                            <f:selectItems value="#{controleLivro.daoIdioma.listaTodos}"
+                                           var="i" itemLabel="#{i.nome}"/>
+                        </p:selectOneMenu>
+                         
+                         <p:outputLabel value="Formato" for="selectFormato"/>
+                         <p:selectOneMenu id="selectFormato" value="#{controleLivro.objeto.formato}"
+                                     filter= "true" filterMatchMode= "startWith">
+                            <f:converter converterId="converterFormato"/>
+                            <f:selectItem noSelectionOption="true"
+                                          itemLabel="selecione um registro"/>
+                            <f:selectItems value="#{controleLivro.daoFormato.listaTodos}"
+                                           var="f" itemLabel="#{f.nome}"/>
+                        </p:selectOneMenu>
+                         
+                    </p:panelGrid>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

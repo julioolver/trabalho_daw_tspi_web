@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo>">CRUD do Livro</ui:define>
+        <ui:define name="conteudo">
+            <h:form prependId="false">
+                <p:growl/>
+                <p:commandButton value="Novo"
+                                 action="#{controleLivro.novo()}"
+                                 ajax="false" icon="pi pi-plus"/>
+                <p:dataTable value="#{controleLivro.dao.listaObjetos}" var="obj">
+                    <p:column headerText="ISBN">
+                        <p:outputLabel value="#{obj.ISBN}"/>
+                    </p:column>
+                    <p:column headerText="Título">
+                        <p:outputLabel value="#{obj.titulo}"/>
+                    </p:column>
+                    <p:column headerText="Resumo">
+
+                        <p:outputLabel value="#{obj.resumo}"/>
+                    </p:column>
+                    <p:column headerText="Editora">
+                        <p:outputLabel value="#{obj.editora}"/>
+                    </p:column>                    
+                    <p:column headerText="Formato">
+                        <p:outputLabel value="#{obj.formato.nome}"/>
+                    </p:column>                    
+                    <p:column headerText="Idioma">
+                        <p:outputLabel value="#{obj.idioma.nome}"/>
+                    </p:column>                    
+                   
+                    <p:column headerText="Código de Barras">
+                        <p:outputLabel value="#{obj.codigobarras}"/>
+                    </p:column>                    
+                    <p:column headerText="Data Cadastro">
+                     <h:outputLabel value="#{obj.datacadastro.time}">
+                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                     </h:outputLabel>
+                    </p:column>
+                    <p:column headerText="Número de Páginas">
+                        <p:outputLabel value="#{obj.numeropaginas}"/>
+                    </p:column>                   
+                    <p:column headerText="Valor">
+                        <p:outputLabel value="#{obj.valor}"/>
+                    </p:column>
+                    <p:column headerText="Ativo?">
+                        <p:outputLabel value="#{obj.ativo}"/>
+                    </p:column>
+
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton action="#{controleLivro.editar(obj.ISBN)}"
+                                             icon="pi pi-pencil" ajax="false"
+                                             title="Editar"/>
+                            <p:commandButton action="#{controleLivro.remover(obj.ISBN)}"
+                                             icon="pi pi-trash"
+                                             title="Remover"
+                                             process="@this" update="@form"
+                                             onclick="if (!confirm('confirma a remoção?'))
+                                                         return false"/>
+
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
