@@ -10,12 +10,14 @@ import java.io.Serializable;
 /**
  *
  * @author Julio Cesar
+ * @param <TIPO>
  */
 public class IdiomaDAO<TIPO> extends DAOGenerico<Idioma> implements Serializable{
     
     public IdiomaDAO(){
         super();
         classePersistente = Idioma.class;
+        ordem = "nome";
     }
     
 }

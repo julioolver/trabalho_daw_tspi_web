@@ -15,7 +15,7 @@
                 <p:menuitem value="inicio"
                             url="#{facesContext.externalContext.requestContextPath}/index.xhtml"
                             icon="pi pi-home"/>
-                <p:submenu label="Cadastros">
+                <p:submenu label="Cadastros" rendered="#{controleLogin.usuarioLogado != null}">
                     <p:column>
                         <p:submenu label="Básicos">
                             <p:menuitem action="#{controleIdioma.listar()}"
@@ -30,6 +30,23 @@
                             <p:menuitem action="#{controleLivro.listar()}"
                                         value="Manutenção de Livro"
                                         ajax="false"/>          
+                            <p:menuitem action="#{controleLivraria.listar()}"
+                                        value="Manutenção de Livraria"
+                                        ajax="false"/>          
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                 <p:submenu label="Usuário">
+                    <p:column>
+                        <p:submenu label="Ações">
+                            <p:menuitem value="#{controleLogin.usuarioLogado.nome} : Sair do sistema"
+                                        rendered="#{controleLogin.usuarioLogado != null}"
+                                        ajax="false" icon="pi pi-power-off"
+                                        action="#{controleLogin.logout()}"/>
+                            <p:menuitem value="Entrar no sistema"
+                                        rendered="#{controleLogin.usuarioLogado == null}"
+                                        ajax="false" icon="pi pi-user"
+                                        action="#{controleLogin.irPaginaLogin()}"/>
                         </p:submenu>
                     </p:column>
                 </p:submenu>

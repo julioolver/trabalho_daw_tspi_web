@@ -10,12 +10,14 @@ import java.io.Serializable;
 /**
  *
  * @author Julio Cesar
+ * @param <TIPO>
  */
 public class LivroDAO<TIPO> extends DAOGenerico<Livro> implements Serializable{
     
     public LivroDAO(){
         super();
         classePersistente = Livro.class;
+        ordem = "titulo";
     }
     
 }

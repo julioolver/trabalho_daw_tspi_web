@@ -11,13 +11,14 @@ import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Julio Cesar
  */
 @ManagedBean(name = "controleAutor")
-@SessionScoped
+@ViewScoped
 public class ControleAutor implements Serializable{
     private AutorDAO<Autor> dao;
     private Autor objeto;
@@ -30,34 +31,29 @@ public class ControleAutor implements Serializable{
     public String listar(){
         return "/privado/Autor/listar?faces-redirect=true";
     }
-    public String novo(){
+    public void novo(){
       //setObjeto(new Autor());
         objeto = new Autor();
-        return "formulario?faces-redirect=true";
+      
     }
-public String salvar(){
+public void salvar(){
         boolean persistiu;
-        if (getObjeto().getId() == null){
-            persistiu = getDao().persist(getObjeto());
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
         } else {
-            persistiu = getDao().merge(getObjeto());
+            persistiu = dao.merge(objeto);
         }
         if (persistiu){
-            Util.mensagemInformacao(getDao().getMensagem());
-            return "listar?faces-redirect=true";
+            Util.mensagemInformacao(dao.getMensagem());
+          
         } else {
-            Util.mensagemErro(getDao().getMensagem());
-            return "formulario?faces-redirect=true";
+            Util.mensagemErro(dao.getMensagem());
+           
         }
-    }
-    
-    public String cancelar(){
-        return "listar?faces-redirect=true";
-    }
-    
-    public String editar(Object id){
+    }    
+    public void editar(Object id){
         setObjeto(getDao().localizar(id));
-        return "formulario?faces-redirect=true";
+        
     }
     
     public void remover(Object id){

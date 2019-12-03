@@ -17,6 +17,7 @@ public class AutorDAO<TIPO> extends DAOGenerico<Autor> implements Serializable{
     public AutorDAO(){
         super();
         classePersistente = Autor.class;
+         ordem = "id";
     }
     
 }

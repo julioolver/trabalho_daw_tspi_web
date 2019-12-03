@@ -2,31 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">edição de Livros</ui:define>
-        <ui:define name="conteudo">
-            <h:form prependId="falase">
-                <p:growl/>
-                <div align="center">
-                    <p:panelGrid columns="2">
-                        <f:facet name="header">
-                            <p:outputLabel value="Edição de Livro"/>
-                        </f:facet>
-                        <f:facet name="footer">
-                            <div align="center">
-                                <p:commandButton value="Cancelar"
-                                                 ajax="false" immediate="true"
-                                                 action="#{controleLivro.cancelar()}"/>
-                                <p:commandButton value="Salvar"
-                                                 ajax="false"
-                                                 action="#{controleLivro.salvar()}"
-                                                 icon="pi pi-save"/>
-                            </div>
-                        </f:facet>
-                        <p:outputLabel value="ISBN"/>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="Edição" widgetVar="dlg" resizable="false"
+              modal="true" width="50%" height="100%" position="top">
+        <h:form id="formEdicao" prependId="false">
+            <p:growl id="growl"/>
+            <p:tabView id="tab" prependId="false">
+                <p:tab title="Dados Principais">
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                           
+                            <p:outputLabel value="ISBN"/>
                         <p:inputText value="#{controleLivro.objeto.ISBN}" readonly="ture" size="16"/>
                         <p:outputLabel value="Título" for="txtTitulo"/>
                         <p:inputText id="txtTitulo" value="#{controleLivro.objeto.titulo}"
@@ -34,7 +22,7 @@
                         
                         <p:outputLabel value="Resume" for="txtResumo"/>
                         <p:inputText id="txtResumo" value="#{controleLivro.objeto.resumo}"
-                                     size="3" maxlength="200"/>
+                                     size="50" maxlength="200"/>
                         
                         <p:outputLabel value="Cod. Barras" for="txtBarras"/>
                         <p:inputText id="txtBarras" value="#{controleLivro.objeto.codigobarras}"
@@ -78,11 +66,61 @@
                             <f:selectItems value="#{controleLivro.daoFormato.listaTodos}"
                                            var="f" itemLabel="#{f.nome}"/>
                         </p:selectOneMenu>
-                         
-                    </p:panelGrid>
+                        </p:panelGrid>
+                    </div>                    
+                </p:tab>
+                <p:tab title="Autors">
+                    <p:dataTable value="#{controleLivro.objeto.livroautor}" var="aut"
+                                 id="listaAutors">
+                        <f:facet name="header">
+                            <p:panelGrid columns="2">
+                                <p:selectOneMenu value="#{controleLivro.autor}"
+                                                 id="selectAutors"
+                                                 filter="true" filterMatchMode="startsWith">
+                                    <f:converter converterId="converterAutor"/>
+                                    <f:selectItem noSelectionOption="true"
+                                                  itemLabel="Selecione um registro"/>
+                                    <f:selectItems 
+                                        value="#{controleLivro.daoAutor.listaTodos}"
+                                        var="p" itemLabel="#{p.nome}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Adicionar Autor"
+                                                 actionListener="#{controleLivro.adicionarLivroAutor()}"
+                                                 update="listaAutors growl"
+                                                 process="selectAutors @this"/>                                        
+                            </p:panelGrid>
+                        </f:facet>
+                        <p:column headerText="Autor">
+                            <p:outputLabel value="#{aut.nome}"/>
+                        </p:column>
+                        <p:column headerText="Bibliografia">
+                            <p:outputLabel value="#{aut.bibliografia}"/>
+                        </p:column> 
+                        <p:column>
+                            <div align="center">
+                                <p:commandButton
+                                    actionListener="#{controleLivro.removerLivroAutor(aut)}"
+                                    update="listaAutors growl" process="@this"
+                                    icon="pi pi-trash"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+
+                </p:tab>
+            </p:tabView>
+
+            <p:panel>
+                <div align="center">
+                    <p:commandButton value="Salvar" icon="pi pi-save"
+                                     actionListener="#{controleLivro.salvar()}"
+                                     oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                     update="formEdicao formListagem"
+
+                                     id="btnSalvar"/>
                 </div>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+            </p:panel>
+            <ui:include src="/templates/ajaxstatus.xhtml"/>
+        </h:form>
+    </p:dialog>
 </html>
 

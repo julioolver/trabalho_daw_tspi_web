@@ -11,13 +11,14 @@ import br.edu.ifsul.util.Util;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Julio Cesar
  */
 @ManagedBean(name = "controleFormato")
-@SessionScoped
+@ViewScoped
 public class ControleFormato implements Serializable{
     private FormatoDAO<Formato> dao;
     private Formato objeto;
@@ -36,19 +37,20 @@ public class ControleFormato implements Serializable{
     }
 public String salvar(){
         boolean persistiu;
-        if (getObjeto().getId() == null){
-            persistiu = getDao().persist(getObjeto());
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
         } else {
-            persistiu = getDao().merge(getObjeto());
+            persistiu = dao.merge(objeto);
         }
         if (persistiu){
-            Util.mensagemInformacao(getDao().getMensagem());
+            Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         } else {
-            Util.mensagemErro(getDao().getMensagem());
+            Util.mensagemErro(dao.getMensagem());
             return "formulario?faces-redirect=true";
         }
     }
+    
     
     public String cancelar(){
         return "listar?faces-redirect=true";

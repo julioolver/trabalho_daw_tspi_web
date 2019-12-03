@@ -6,12 +6,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">CRUD de Livros</ui:define>
+        <ui:define name="titulo">CRUD de Livrarias</ui:define>
         <ui:define name="conteudo">
             <h:form id="formListagem" prependId="false">
                 <p:growl/>
                 <p:commandButton value="Novo"
-                                 action="#{controleLivro.novo()}"
+                                 action="#{controleLivraria.novo()}"
                                  icon="pi pi-plus"
                                  process="@form" update="formEdicao"
                                  oncomplete="PF('dlg').show();"/>
@@ -19,71 +19,60 @@
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem:"/>
-                        <p:selectOneMenu value="#{controleLivro.dao.ordem}">
-                            <f:selectItem itemLabel="ISBN" itemValue="ISBN"/>
-                            <f:selectItem itemLabel="titulo" itemValue="titulo"/>
+                        <p:selectOneMenu value="#{controleLivraria.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro: "/>
-                        <p:inputText value="#{controleLivro.dao.filtro}" size="20">
+                        <p:inputText value="#{controleLivraria.dao.filtro}" size="20">
                             <p:ajax update="listagem" event="blur"/>
                         </p:inputText>
                         <p:commandButton value="Filtrar" update="listagem"
                                          process="@form" id="btnFiltrar"/>
                         <p:outputLabel value="Máximo de objetos"/>
-                        <p:inputNumber value="#{controleLivro.dao.maximoObjetos}"
+                        <p:inputNumber value="#{controleLivraria.dao.maximoObjetos}"
                                        size="3" thousandSeparator=""
                                        decimalSeparator="" decimalPlaces="0">
                             <p:ajax event="blur" update="listagem"/>
                         </p:inputNumber>
-                        <p:commandButton action="#{controleLivro.dao.primeiro()}"
+                        <p:commandButton action="#{controleLivraria.dao.primeiro()}"
                                          title="Primeiro" icon="pi pi-step-backward"
                                          update="listagem"/>
-                        <p:commandButton action="#{controleLivro.dao.anterior()}"
+                        <p:commandButton action="#{controleLivraria.dao.anterior()}"
                                          title="Anterior" icon="pi pi-chevron-left"
                                          update="listagem"/>   
-                        <p:commandButton action="#{controleLivro.dao.proximo()}"
+                        <p:commandButton action="#{controleLivraria.dao.proximo()}"
                                          title="Próximo" icon="pi pi-chevron-right"
                                          update="listagem"/>   
-                        <p:commandButton action="#{controleLivro.dao.ultimo()}"
+                        <p:commandButton action="#{controleLivraria.dao.ultimo()}"
                                          title="Último" icon="pi pi-step-forward"
                                          update="listagem"/>                        
                     </p:panelGrid>
                 </div>
-                <p:dataTable value="#{controleLivro.dao.listaObjetos}" var="obj"
+                <p:dataTable value="#{controleLivraria.dao.listaObjetos}" var="obj"
                              id="listagem">
                     <f:facet name="footer">
-                        <p:outputLabel value="#{controleLivro.dao.mensagemNavegacao}"/>
+                        <p:outputLabel value="#{controleLivraria.dao.mensagemNavegacao}"/>
                     </f:facet>
-          <p:column headerText="ISBN">
-                        <p:outputLabel value="#{obj.ISBN}"/>
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
                     </p:column>
-                    <p:column headerText="Título">
-                        <p:outputLabel value="#{obj.titulo}"/>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
                     </p:column>
-                    <p:column headerText="Resumo">
-
-                        <p:outputLabel value="#{obj.resumo}"/>
-                    </p:column>
-                    <p:column headerText="Editora">
-                        <p:outputLabel value="#{obj.editora}"/>
+                    <p:column headerText="CPF">
+                        <p:outputLabel value="#{obj.site}"/>
                     </p:column>                    
-<!--                    <p:column headerText="Formato">
-                        <p:outputLabel value="#{obj.formato.nome}"/>
-                    </p:column>                    
-                    <p:column headerText="Idioma">
-                        <p:outputLabel value="#{obj.idioma.nome}"/>
-                    </p:column>                    
-                   -->
-                    
+                                    
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controleLivro.editar(obj.ISBN)}"
+                            <p:commandButton action="#{controleLivraria.editar(obj.id)}"
                                              icon="pi pi-pencil"
                                              title="Editar"
                                              process="@form" update="formEdicao"
                                              oncomplete="PF('dlg').show();"/>
-                            <p:commandButton action="#{controleLivro.remover(obj.ISBN)}"
+                            <p:commandButton action="#{controleLivraria.remover(obj.id)}"
                                              icon="pi pi-trash"
                                              title="Remover"
                                              process="@this" update="@form"
